@@ -1,0 +1,445 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Slyrah design tokens — "Structural Color"
+
+   The brand's mark is a butterfly, and a butterfly's colour is structural:
+   it comes from how the wing bends light, not from pigment. Fabric behaves
+   the same way. So the palette is built from one duochrome pair (iris/peony)
+   that only ever appears on EDGES — 1–2px rules, rings, the butterfly mark.
+   Never as a background wash. Surfaces stay quiet so the product photography
+   and the type carry the page.
+   ========================================================================== */
+
+@theme {
+  /* --- Surfaces ------------------------------------------------------- */
+  --color-oyster: #f2f0f1; /* page ground: pale, cool, deliberately not cream */
+  --color-chalk: #fcfbfc; /* cards, sheets, inputs */
+  --color-mist: #e4dfe3; /* hairlines, dividers, disabled fills */
+  --color-shell: #eae5e9; /* inset wells, skeletons, hover on light */
+
+  /* --- Editorial dark (character stories, video, drops) ---------------- */
+  --color-aubergine: #2b1f2e;
+  --color-aubergine-deep: #1c141e;
+
+  /* --- Text ------------------------------------------------------------ */
+  --color-ink: #221d23; /* plum-black: headings, primary button */
+  --color-graphite: #4a424a; /* body copy */
+  --color-clay: #8a818a; /* captions, meta, placeholders */
+
+  /* --- Duochrome (edges only) ------------------------------------------ */
+  --color-iris: #6d5c9b;
+  --color-iris-soft: #ece8f4;
+  --color-peony: #c86a88;
+  --color-peony-soft: #f7eaee;
+
+  /* --- Status ---------------------------------------------------------- */
+  --color-sale: #b0324f;
+  --color-success: #3d6b51;
+  --color-success-soft: #e8f0eb;
+  --color-warning: #8f6524;
+  --color-warning-soft: #f7efe2;
+  --color-danger: #a33232;
+  --color-danger-soft: #f7e9e9;
+
+  /* --- Type ------------------------------------------------------------ */
+  --text-hero: clamp(2.5rem, 1.2rem + 5.6vw, 5.75rem);
+  --text-hero--line-height: 0.94;
+  --text-hero--letter-spacing: -0.035em;
+
+  --text-display: clamp(2rem, 1.2rem + 3.2vw, 3.5rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.028em;
+
+  --text-title: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+  --text-title--line-height: 1.08;
+  --text-title--letter-spacing: -0.022em;
+
+  --text-heading: clamp(1.185rem, 1rem + 0.7vw, 1.5rem);
+  --text-heading--line-height: 1.2;
+  --text-heading--letter-spacing: -0.015em;
+
+  --text-lede: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-lede--line-height: 1.55;
+
+  /* --- Radii: soft, garment-like, never pill-by-default ----------------- */
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* --- Elevation: light is directional and low-contrast ----------------- */
+  --shadow-lift: 0 1px 2px rgb(34 29 35 / 0.04), 0 8px 24px -12px rgb(34 29 35 / 0.14);
+  --shadow-sheet: 0 -2px 4px rgb(34 29 35 / 0.04), 0 -24px 60px -24px rgb(34 29 35 / 0.28);
+  --shadow-panel: 0 24px 70px -30px rgb(34 29 35 / 0.36);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --ease-drape: cubic-bezier(0.22, 0.61, 0.28, 1);
+  --ease-wing: cubic-bezier(0.34, 1.4, 0.5, 1);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --spacing-gutter: clamp(1rem, 0.55rem + 2vw, 2.5rem);
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-body: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), ui-monospace, "SF Mono", monospace;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --header-height: 3.5rem;
+    --announcement-height: 2rem;
+    color-scheme: light;
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --header-height: 4.5rem;
+    }
+  }
+
+  * {
+    border-color: var(--color-mist);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-oyster);
+    color: var(--color-graphite);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    /* Fraunces variable axes: slightly soft terminals, a touch of wonk.
+       This is the one place the type is allowed to be odd. */
+    font-variation-settings: "SOFT" 24, "WONK" 1, "opsz" 32;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Tabular figures everywhere a price, size or count is compared. */
+  .font-mono,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-iris);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background: var(--color-peony-soft);
+    color: var(--color-ink);
+  }
+
+  /* Inputs never zoom the viewport on iOS. */
+  input,
+  select,
+  textarea {
+    font-size: max(1rem, 1em);
+    font-family: inherit;
+  }
+
+  dialog::backdrop {
+    background: rgb(28 20 30 / 0.5);
+    backdrop-filter: blur(2px);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   Named classes
+   ==========================================================================
+   These live in the components layer, not utilities. A class here that sets
+   `display` or `padding` would otherwise out-order a utility like `lg:hidden`
+   or `lg:px-0` applied to the same element, and silently win.
+   ========================================================================== */
+
+@layer components {
+  /* The site's one measure. Everything aligns to it. */
+  .shell {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 90rem;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  .shell-narrow {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 46rem;
+    padding-inline: var(--spacing-gutter);
+  }
+
+  /* Iridescence, the brand's signature — permitted on edges only. */
+  .edge-iris {
+    position: relative;
+  }
+  .edge-iris::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(105deg, var(--color-iris), var(--color-peony) 55%, var(--color-iris));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .rule-iris {
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--color-iris), var(--color-peony) 60%, transparent);
+  }
+
+  /* Defined once, here — not as a `--text-*` theme token, which would generate
+     a second `.text-eyebrow` rule that fights this one. */
+  .text-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+  }
+
+  /* Editorial panels get a faint film-grain so flat dark areas don't band. */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Horizontal rails: snap on touch, free scroll with buttons on desktop. */
+  .rail {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--spacing-gutter);
+  }
+  .rail > * {
+    scroll-snap-align: start;
+    flex: none;
+  }
+
+  .stack-gap > * + * {
+    margin-block-start: var(--stack, 1rem);
+  }
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+
+@layer components {
+  /* The hero: four portrait panels that behave like a spread pair of wings.
+     Pointing at one opens it and settles the others. Pure CSS, so it works
+     under keyboard focus as well as hover and costs nothing on a phone. */
+  .wing-row {
+    display: flex;
+    gap: 2px;
+  }
+
+  /* Mobile: a snap rail of fixed-width panels. Desktop: one spread that
+     shares the full width. Both live here rather than in utility classes so
+     the flex shorthand can't be half-overridden. */
+  .wing-panel {
+    flex: 0 0 76vw;
+    min-width: 0;
+    transition: flex-grow 0.6s var(--ease-drape);
+    scroll-snap-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .wing-panel {
+      flex-basis: 46vw;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .wing-panel {
+      flex: 1 1 0;
+    }
+  }
+
+  @media (hover: hover) and (min-width: 1024px) {
+    .wing-row:has(.wing-panel:hover) .wing-panel,
+    .wing-row:has(.wing-panel:focus-within) .wing-panel {
+      flex-grow: 0.82;
+    }
+
+    .wing-row .wing-panel:hover,
+    .wing-row .wing-panel:focus-within {
+      flex-grow: 2.4;
+    }
+  }
+}
+
+/* ==========================================================================
+   Keyframes
+   ========================================================================== */
+
+@keyframes slyrah-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slyrah-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slyrah-sheet-up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes slyrah-slide-end {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes slyrah-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* The wings open when a colour is chosen. */
+@keyframes slyrah-wing {
+  0% {
+    transform: scaleX(1) rotate(0deg);
+  }
+  45% {
+    transform: scaleX(0.82) rotate(-6deg);
+  }
+  100% {
+    transform: scaleX(1) rotate(0deg);
+  }
+}
+
+.animate-rise {
+  animation: slyrah-rise 0.5s var(--ease-drape) both;
+}
+
+.animate-fade {
+  animation: slyrah-fade-in 0.3s var(--ease-drape) both;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-shell) 25%,
+    var(--color-mist) 50%,
+    var(--color-shell) 75%
+  );
+  background-size: 200% 100%;
+  animation: slyrah-shimmer 1.5s linear infinite;
+}
+
+/* Scroll-reveal: sections rise once as they enter. Progressive enhancement —
+   without JS or with reduced motion they are simply visible. */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.7s var(--ease-drape),
+    transform 0.7s var(--ease-drape);
+}
+
+[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
